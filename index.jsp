@@ -1,8 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" 
+pageEncoding="ISO-8859-1" import="com.Teste"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-        <title><%=request.getServletContext().getServerInfo() %></title>
+        <title>Login</title>
         <link href="favicon.ico" rel="icon" type="image/x-icon" />
         <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 	<link href="styles.css" rel="stylesheet">
@@ -15,6 +17,9 @@
 		String password = request.getParameter("password");
 		out.println("Username: " + username);
 		out.println("Password: " + password);
+		Teste teste = new Teste();
+		String texto = teste.printar();
+		out.println(texto);
 	%>
 
 	<form action="index.jsp" method="POST">
