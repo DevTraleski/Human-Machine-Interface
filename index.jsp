@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" 
-pageEncoding="ISO-8859-1" import="com.Teste"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="connection.Login" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -15,28 +14,66 @@ pageEncoding="ISO-8859-1" import="com.Teste"%>
 	<%
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		out.println("Username: " + username);
-		out.println("Password: " + password);
-		Teste teste = new Teste();
-		String texto = teste.printar();
-		out.println(texto);
+		String gateway = request.getParameter("gateway");
+		String validation = request.getParameter("validation_token");
+
+		if (username != null && password != null) {
+			Login login = new Login();
+			String[] params = login.auth(username, password);
+			
+			Cookie accessCookie = new Cookie("access_token", params[0]);
+			accessCookie.setMaxAge(Integer.parseInt(params[2]));
+			Cookie refreshCookie = new Cookie("refresh_token", params[1]);
+			refreshCookie.setMaxAge(60*60*24);
+
+			response.addCookie(accessCookie);
+			response.addCookie(refreshCookie);
+			response.setIntHeader("Refresh", 0);
+		} else if (gateway != null && validation != null) {
+			Login login = new Login();
+			out.println("Searching for meaning of life...");
+		}
+ 
+		Cookie[] cookies = request.getCookies();
+		Boolean tokenExists = false;
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				if(cookies[i].getName().compareTo("access_token") == 0) {
+					tokenExists = true;
+				}
+			}
+		}
+		if (tokenExists == false) {
 	%>
+		<form action="index.jsp" method="POST">
+			<div class="imgcontainer">
+				<img src="Copel.jpg" alt="Avatar" class="avatar">
+			</div>
 
-	<form action="index.jsp" method="POST">
-		<div class="imgcontainer">
-			<img src="Copel.jpg" alt="Avatar" class="avatar">
-		</div>
+			<div class="container">
+				<label for="uname"><b>Username</b></label>
+				<input type="text" placeholder="Enter Username" name="username" required>
 
-		<div class="container">
-			<label for="uname"><b>Username</b></label>
-			<input type="text" placeholder="Enter Username" name="username" required>
+				<label for="psw"><b>Password</b></label>
+				<input type="password" placeholder="Enter Password" name="password" required>
 
-			<label for="psw"><b>Password</b></label>
-			<input type="password" placeholder="Enter Password" name="password" required>
+				<button type="submit">Login</button>
+			</div>
+		</form>
+	<% } else { %>
+		<form action="index.jsp" method="POST">
+			<div class="imgcontainer">
+				<img src="Copel.jpg" alt="Avatar" class="avatar">
+			</div>
 
-			<button type="submit">Login</button>
-		</div>
-	</form>
+			<div class="container">
+				<label for="uname"><b>Gateway</b></label>
+				<input type="text" placeholder="Enter Gateway" name="gateway" required>
+				<input type="hidden" name="validation_token" value="${cookie['access_token'].getValue()}" />
+				<button type="submit">Search</button>
+			</div>
+		</form>
+	<% } %>
     </body>
 
 </html>
