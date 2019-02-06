@@ -31,7 +31,8 @@
 			response.setIntHeader("Refresh", 0);
 		} else if (gateway != null && validation != null) {
 			Login login = new Login();
-			out.println("Searching for meaning of life...");
+			String res = login.search(validation, gateway);
+			out.println(res);
 		}
  
 		Cookie[] cookies = request.getCookies();

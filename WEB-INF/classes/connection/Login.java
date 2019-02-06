@@ -115,4 +115,33 @@ public class Login {
 		return params;
 	}
 
+	public String search(String token, String gateway) throws Exception {
+		URL url = new URL("https://172.17.0.4:5000/search");
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+		con.setRequestMethod("POST");
+
+		//Header
+		con.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+		con.setDoOutput(true);
+
+		String data = "token=" + token + "&gateway=" + gateway;
+		byte[] dataInBytes = data.getBytes("UTF-8");
+		OutputStream output = con.getOutputStream();
+		output.write(dataInBytes);
+		output.close();
+
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		return response.toString();
+	}
+
 }
