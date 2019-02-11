@@ -34,9 +34,9 @@ public class Login {
 		consumerKey = "JIsq3YltZhc2nKIKJlUTRm9ZKmoa";
 		consumerSecret = "VdYN6S7UfQPXrBheoXPViODA1kga";
 
-		tokenEndpoint = "https://10.0.75.2:9443/oauth2/token";
-		authEndpoint = "https://10.0.75.2:9443/oauth2/authorize";
-		callbackUrl = "https://10.0.75.1/";
+		tokenEndpoint = "https://172.0.17.2:9443/oauth2/token";
+		authEndpoint = "https://172.0.17.2:9443/oauth2/authorize";
+		callbackUrl = "https://172.0.17.1/";
 	}
 
 	private static void disableSslVerification() throws Exception {
@@ -116,16 +116,17 @@ public class Login {
 	}
 
 	public String search(String token, String gateway) throws Exception {
-		URL url = new URL("https://172.17.0.4:5000/search");
+		URL url = new URL("https://172.0.17.4:5000/search");
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-		con.setRequestMethod("POST");
+		con.setRequestMethod("GET");
 
 		//Header
+		con.setRequestProperty("Authorization","Bearer " + token);
 		con.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
 		con.setDoOutput(true);
 
-		String data = "token=" + token + "&gateway=" + gateway;
+		String data = "gateway=" + gateway + "&req=GetInfo";
 		byte[] dataInBytes = data.getBytes("UTF-8");
 		OutputStream output = con.getOutputStream();
 		output.write(dataInBytes);
