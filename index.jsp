@@ -32,7 +32,14 @@
 		} else if (gateway != null && validation != null) {
 			Login login = new Login();
 			String res = login.search(validation, gateway);
-			out.println(res);
+			Thread.sleep(30000);
+			String data = login.getData(validation);
+			if(data != "Null") {
+				out.println(data);
+			} else {
+				out.println("Nothing found");
+			} 
+
 		}
  
 		Cookie[] cookies = request.getCookies();
