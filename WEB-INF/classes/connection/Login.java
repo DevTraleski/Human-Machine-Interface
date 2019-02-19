@@ -115,7 +115,7 @@ public class Login {
 		return params;
 	}
 
-	public String search(String token, String gateway) throws Exception {
+	public String search(String token, String gateway, String searchKey) throws Exception {
 		URL url = new URL("https://172.0.17.4:5000/search");
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -126,7 +126,7 @@ public class Login {
 		con.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
 		con.setDoOutput(true);
 
-		String data = "gateway=" + gateway + "&req=GetInfo";
+		String data = "gateway=" + gateway + "&req=" + searchKey;
 		byte[] dataInBytes = data.getBytes("UTF-8");
 		OutputStream output = con.getOutputStream();
 		output.write(dataInBytes);

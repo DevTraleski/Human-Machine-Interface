@@ -31,8 +31,8 @@
 			response.setIntHeader("Refresh", 0);
 		} else if (gateway != null && validation != null) {
 			Login login = new Login();
-			String res = login.search(validation, gateway);
-			Thread.sleep(30000);
+			String res = login.search(validation, gateway, "infox");
+			Thread.sleep(7000);
 			String data = login.getData(validation);
 			if(data != "Null") {
 				out.println(data);
