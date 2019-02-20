@@ -16,7 +16,8 @@
 		String password = request.getParameter("password");
 		String gateway = request.getParameter("gateway");
 		String validation = request.getParameter("validation_token");
-
+		String alert = request.getParameter("alerts");
+	
 		if (username != null && password != null) {
 			Login login = new Login();
 			String[] params = login.auth(username, password);
@@ -40,6 +41,11 @@
 				out.println("Nothing found");
 			} 
 
+		} else if (validation != null && alert != null) {
+			Login login = new Login();
+			String result = login.getAlerts(validation);
+			out.println("Alerts:<br>");
+			out.println(result);
 		}
  
 		Cookie[] cookies = request.getCookies();
@@ -79,6 +85,13 @@
 				<input type="text" placeholder="Enter Gateway" name="gateway" required>
 				<input type="hidden" name="validation_token" value="${cookie['access_token'].getValue()}" />
 				<button type="submit">Search</button>
+			</div>
+		</form>
+		<form action="index.jsp" method="POST">
+			<div class="container">
+				<input type="hidden" name="alerts" value="getAlert" />
+				<input type="hidden" name="validation_token" value="${cookie['access_token'].getValue()}" />
+				<button type"submit">Get alerts</button>
 			</div>
 		</form>
 	<% } %>
