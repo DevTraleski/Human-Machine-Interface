@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 import org.json.JSONObject;
 
 import javax.net.ssl.HostnameVerifier;
@@ -143,30 +144,6 @@ public class Login {
 		in.close();
 
 		return response.toString();
-	}
-
-	public String getData(String token) throws Exception {
-		URL url = new URL("https://172.0.17.4:5000/getdata");
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-                con.setRequestMethod("GET");
-
-                //Header
-                con.setRequestProperty("Authorization","Bearer " + token);
-                con.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
-                con.setDoOutput(true);
-
-		BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                }
-                in.close();
-
-                return response.toString();
 	}
 
 	public String getAlerts(String token) throws Exception {

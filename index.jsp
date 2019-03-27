@@ -17,6 +17,7 @@
 		String gateway = request.getParameter("gateway");
 		String validation = request.getParameter("validation_token");
 		String alert = request.getParameter("alerts");
+		String packetsize = request.getParameter("packetsize");
 	
 		if (username != null && password != null) {
 			Login login = new Login();
@@ -32,9 +33,7 @@
 			response.setIntHeader("Refresh", 0);
 		} else if (gateway != null && validation != null) {
 			Login login = new Login();
-			String res = login.search(validation, gateway, "infox");
-			Thread.sleep(7000);
-			String data = login.getData(validation);
+			String data = login.search(validation, gateway, packetsize);
 			if(data != "Null") {
 				out.println(data);
 			} else {
@@ -80,9 +79,19 @@
 				<img src="Copel.jpg" alt="Avatar" class="avatar">
 			</div>
 
+			<select name="packetsize">
+				<option value='info2'>2 Bytes</option>
+				<option value='info4'>4 Bytes</option>
+				<option value='info8'>8 Bytes</option>
+				<option value='info16'>16 Bytes</option>
+				<option value='info32'>32 Bytes</option>
+				<option value='info64'>64 Bytes</option>
+				<option value='info128'>128 Bytes</option>
+			</select>
+
 			<div class="container">
 				<label for="uname"><b>Gateway</b></label>
-				<input type="text" placeholder="Enter Gateway" name="gateway" required>
+				<input type="text" placeholder="Enter Gateway" name="gateway" value="gateway_a" required>
 				<input type="hidden" name="validation_token" value="${cookie['access_token'].getValue()}" />
 				<button type="submit">Search</button>
 			</div>
